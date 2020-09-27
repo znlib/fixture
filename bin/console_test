@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Application;
+use ZnCore\Base\Libs\DotEnv\DotEnv;
+
+require __DIR__ . '/../../../autoload.php';
+$_ENV['APP_ENV'] = $_SERVER['APP_ENV'] = 'test';
+DotEnv::init();
+
+// создаем консольное приложение
+$application = new Application;
+
+require __DIR__ . '/bootstrap.php';
+
+$application->run();
