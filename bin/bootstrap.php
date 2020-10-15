@@ -12,8 +12,7 @@ use ZnLib\Fixture\Domain\Services\FixtureService;
  * @var Application $application
  */
 
-$eloquentConfigFile = $_ENV['ELOQUENT_CONFIG_FILE'];
-$capsule = new Manager(null, $eloquentConfigFile);
+$capsule = \ZnLib\Db\Factories\ManagerFactory::createManagerFromEnv();
 
 // --- Fixture ---
 
