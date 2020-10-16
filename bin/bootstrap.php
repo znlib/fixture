@@ -17,7 +17,7 @@ $capsule = \ZnLib\Db\Factories\ManagerFactory::createManagerFromEnv();
 // --- Fixture ---
 
 // создаем сервис "Фикстуры" с внедрением двух репозиториев
-$fixtureService = new FixtureService(new DbRepository($capsule), new FileRepository($eloquentConfigFile));
+$fixtureService = new FixtureService(new DbRepository($capsule), new FileRepository($_ENV['ELOQUENT_CONFIG_FILE']));
 
 // создаем и объявляем команду "Экспорт фикстур"
 $exportCommand = new ExportCommand(ExportCommand::getDefaultName(), $fixtureService);

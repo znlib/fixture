@@ -3,6 +3,7 @@
 namespace ZnLib\Fixture\Domain\Repositories;
 
 use Illuminate\Support\Collection;
+use ZnCore\Base\Helpers\LoadHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Interfaces\GetEntityClassInterface;
 use ZnCore\Domain\Interfaces\Repository\RepositoryInterface;
@@ -24,7 +25,7 @@ class FileRepository implements RepositoryInterface, GetEntityClassInterface
 
     public function __construct($mainConfigFile = null)
     {
-        $config = $this->loadConfig($mainConfigFile);
+        $config = LoadHelper::loadConfig($mainConfigFile);
         $this->config = $config['fixture'];
         /*if(empty($this->config)) {
             throw new InvalidConfigException('Empty fixture configuration!');
