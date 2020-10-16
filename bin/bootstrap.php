@@ -2,27 +2,23 @@
 
 use Symfony\Component\Console\Application;
 use ZnLib\Db\Capsule\Manager;
-use ZnLib\Fixture\Commands\ExportCommand;
-use ZnLib\Fixture\Commands\ImportCommand;
 use ZnLib\Fixture\Domain\Repositories\DbRepository;
 use ZnLib\Fixture\Domain\Repositories\FileRepository;
 use ZnLib\Fixture\Domain\Services\FixtureService;
+use Illuminate\Container\Container;
+use ZnLib\Console\Symfony4\Helpers\CommandHelper;
 
 /**
  * @var Application $application
+ * @var Container $container
  */
 
-$capsule = \ZnLib\Db\Factories\ManagerFactory::createManagerFromEnv();
+$capsule = $container->get(Manager::class);
 
-// --- Fixture ---
+$container->bind(FileRepository::class, function () {
+    return new FileRepository($_ENV['ELOQUENT_CONFIG_FILE']);
+});
 
-// создаем сервис "Фикстуры" с внедрением двух репозиториев
-$fixtureService = new FixtureService(new DbRepository($capsule), new FileRepository($_ENV['ELOQUENT_CONFIG_FILE']));
-
-// создаем и объявляем команду "Экспорт фикстур"
-$exportCommand = new ExportCommand(ExportCommand::getDefaultName(), $fixtureService);
-$application->add($exportCommand);
-
-// создаем и объявляем команду "Импорт фикстур"
-$importCommand = new ImportCommand(ImportCommand::getDefaultName(), $fixtureService);
-$application->add($importCommand);
+CommandHelper::registerFromNamespaceList([
+    'ZnLib\Fixture\Commands'
+], $container);

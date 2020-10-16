@@ -22,6 +22,11 @@ class DbRepository extends BaseEloquentRepository
         return FixtureEntity::class;
     }
 
+    public function tableName(): string
+    {
+        return '';
+    }
+
     public function __construct(\ZnLib\Db\Capsule\Manager $capsule)
     {
         parent::__construct($capsule);
