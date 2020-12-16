@@ -156,7 +156,7 @@ class DbRepository extends BaseEloquentRepository
             $max = $queryBuilder->max('id');
             if ($max) {
                 $pkName = 'id';
-                $sql = 'SELECT setval(\'' . $targetTableName . '_' . $pkName . '_seq\', ' . ($max + 1) . ')';
+                $sql = 'SELECT setval(\'' . $targetTableName . '_' . $pkName . '_seq\', ' . ($max) . ')';
                 $connection = $queryBuilder->getConnection();
                 $connection->statement($sql);
             }
