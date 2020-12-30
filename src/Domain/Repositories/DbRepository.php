@@ -9,7 +9,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
+use ZnCore\Domain\Libs\EntityManager;
 use ZnLib\Db\Base\BaseEloquentRepository;
+use ZnLib\Db\Capsule\Manager;
 use ZnLib\Db\Enums\DbDriverEnum;
 use ZnLib\Fixture\Domain\Helpers\StructHelper;
 use ZnLib\Fixture\Domain\Entities\FixtureEntity;
@@ -27,9 +29,9 @@ class DbRepository extends BaseEloquentRepository
         return '';
     }
 
-    public function __construct(\ZnLib\Db\Capsule\Manager $capsule)
+    public function __construct(EntityManager $em, Manager $capsule)
     {
-        parent::__construct($capsule);
+        parent::__construct($em, $capsule);
 
         $schema = $this->getSchema();
 

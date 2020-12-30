@@ -1,12 +1,11 @@
 <?php
 
-use Symfony\Component\Console\Application;
-use ZnLib\Db\Capsule\Manager;
-use ZnLib\Fixture\Domain\Repositories\DbRepository;
-use ZnLib\Fixture\Domain\Repositories\FileRepository;
-use ZnLib\Fixture\Domain\Services\FixtureService;
 use Illuminate\Container\Container;
+use Symfony\Component\Console\Application;
 use ZnLib\Console\Symfony4\Helpers\CommandHelper;
+use ZnLib\Db\Capsule\Manager;
+use ZnLib\Fixture\Domain\Repositories\FileRepository;
+use Psr\Container\ContainerInterface;
 
 /**
  * @var Application $application
@@ -15,6 +14,9 @@ use ZnLib\Console\Symfony4\Helpers\CommandHelper;
 
 $capsule = $container->get(Manager::class);
 
+$container->bind(ContainerInterface::class, function (ContainerInterface $container) {
+    return $container;
+});
 $container->bind(FileRepository::class, function () {
     return new FileRepository($_ENV['ELOQUENT_CONFIG_FILE']);
 });
