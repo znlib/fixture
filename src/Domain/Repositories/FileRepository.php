@@ -57,10 +57,11 @@ class FileRepository implements RepositoryInterface, GetEntityClassInterface
     public function saveData($name, Collection $collection)
     {
         $dataFixture = $this->loadData($name);
-
         $data['deps'] = $dataFixture->deps();
+        if(property_exists($collection->first(), 'id')) {
+            $collection = $collection->sortBy('id');
+        }
         $data['collection'] = ArrayHelper::toArray($collection->toArray());
-
         $this->getStoreInstance($name)->save($data);
     }
 
