@@ -6,6 +6,8 @@ use ZnLib\Console\Symfony4\Helpers\CommandHelper;
 use ZnLib\Db\Capsule\Manager;
 use ZnLib\Fixture\Domain\Repositories\FileRepository;
 use Psr\Container\ContainerInterface;
+use ZnCore\Domain\Libs\EntityManager;
+use ZnCore\Domain\Interfaces\Libs\EntityManagerInterface;
 
 /**
  * @var Application $application
@@ -14,6 +16,10 @@ use Psr\Container\ContainerInterface;
 
 $capsule = $container->get(Manager::class);
 
+$em = new EntityManager($container);
+$container->bind(EntityManagerInterface::class, function (ContainerInterface $container) use ($em) {
+    return $em;
+});
 $container->bind(ContainerInterface::class, function (ContainerInterface $container) {
     return $container;
 });

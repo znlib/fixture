@@ -6,15 +6,14 @@ use Illuminate\Database\Schema\Builder;
 use Illuminate\Database\Schema\MySqlBuilder;
 use Illuminate\Database\Schema\PostgresBuilder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
-use ZnCore\Domain\Libs\EntityManager;
+use ZnCore\Domain\Helpers\EntityHelper;
+use ZnCore\Domain\Interfaces\Libs\EntityManagerInterface;
 use ZnLib\Db\Base\BaseEloquentRepository;
 use ZnLib\Db\Capsule\Manager;
 use ZnLib\Db\Enums\DbDriverEnum;
-use ZnLib\Fixture\Domain\Helpers\StructHelper;
 use ZnLib\Fixture\Domain\Entities\FixtureEntity;
+use ZnLib\Fixture\Domain\Helpers\StructHelper;
 
 class DbRepository extends BaseEloquentRepository
 {
@@ -29,7 +28,7 @@ class DbRepository extends BaseEloquentRepository
         return '';
     }
 
-    public function __construct(EntityManager $em, Manager $capsule)
+    public function __construct(EntityManagerInterface $em, Manager $capsule)
     {
         parent::__construct($em, $capsule);
 
