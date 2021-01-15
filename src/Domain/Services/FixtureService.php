@@ -78,7 +78,6 @@ class FixtureService
         $deps = $dataFixture->deps();
         $dataFixture->unload();
         $data = $dataFixture->load();
-
         if($deps) {
             foreach ($deps as $dep) {
                 $this->importTable($dep, $beforeOutput, $afterOutput, $tableCollection);
