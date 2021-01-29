@@ -1,18 +1,14 @@
 #!/usr/bin/env php
 <?php
 
-use Illuminate\Container\Container;
 use Symfony\Component\Console\Application;
-use ZnCore\Base\Libs\App\Facades\ConsoleAppFacade;
+use ZnCore\Base\Helpers\ComposerHelper;
+use ZnLib\Console\Symfony4\Helpers\CommandHelper;
+
 
 require __DIR__ . '/../../../autoload.php';
+require __DIR__ . '/../src/Commands/config/consoleBootstrap.php';
 
-$container = Container::getInstance();
-ConsoleAppFacade::init($container, [
-    __DIR__ . '/../../../../vendor/znlib/db/src/config/container.php',
-    __DIR__ . '/../../../../vendor/znlib/fixture/src/Domain/config/container.php',
-]);
-
-require __DIR__ . '/bootstrap.php';
-$application = $container->get(Application::class);
+$application = new Application();
+CommandHelper::registerFromNamespaceList($config['consoleCommands'], $container, $application);
 $application->run();
