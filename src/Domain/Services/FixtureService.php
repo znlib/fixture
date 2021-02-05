@@ -61,7 +61,12 @@ class FixtureService
         $tableCollection = EntityHelper::indexingCollection($tableCollection, 'name');
 
         foreach ($selectedTables as $tableName) {
-            $this->importTable($tableName, $beforeOutput, $afterOutput, $tableCollection);
+            if($this->dbRepository->isHasTable($tableName)) {
+                $this->importTable($tableName, $beforeOutput, $afterOutput, $tableCollection);
+                //$afterOutput('OK');
+            } else {
+                //$afterOutput('Table not exists');
+            }
         }
     }
 

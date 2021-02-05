@@ -73,6 +73,14 @@ class DbRepository extends BaseEloquentRepository
         $queryBuilder->truncate();
     }
 
+    public function isHasTable($name)
+    {
+        $tableAlias = $this->getCapsule()->getAlias();
+        $targetTableName = $tableAlias->encode('default', $name);
+        $connection = $this->getConnection();
+        return $connection->getSchemaBuilder()->hasTable($targetTableName);
+    }
+
     public function saveData($name, Collection $collection)
     {
         $tableAlias = $this->getCapsule()->getAlias();
