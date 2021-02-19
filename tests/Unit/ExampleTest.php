@@ -1,6 +1,6 @@
 <?php
 
-namespace ZnCore\Db\Tests\Unit;
+namespace ZnLib\Db\Tests\Unit;
 
 use ZnTool\Test\Base\BaseTest;
 
