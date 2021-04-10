@@ -62,6 +62,7 @@ class FileRepository implements RepositoryInterface, GetEntityClassInterface
             $collection = $collection->sortBy('id');
         }
         $data['collection'] = ArrayHelper::toArray($collection->toArray());
+        $data['collection'] = array_values($data['collection']);
         $this->getStoreInstance($name)->save($data);
     }
 
