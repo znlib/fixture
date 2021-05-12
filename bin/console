@@ -1,14 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-use Symfony\Component\Console\Application;
-use ZnCore\Base\Helpers\ComposerHelper;
-use ZnLib\Console\Symfony4\Helpers\CommandHelper;
-
+use ZnCore\Base\Libs\App\Factories\ApplicationFactory;
+use ZnCore\Base\Libs\App\Factories\KernelFactory;
 
 require __DIR__ . '/../../../autoload.php';
-require __DIR__ . '/../src/Commands/config/consoleBootstrap.php';
 
-$application = new Application();
-CommandHelper::registerFromNamespaceList($config['consoleCommands'], $container, $application);
+$bundles = [
+    new \ZnCore\Base\Libs\App\Bundle(['all']),
+    new \ZnLib\Fixture\Bundle(['container', 'console']),
+];
+$kernel = KernelFactory::createConsoleKernel($bundles);
+$application = ApplicationFactory::createConsole($kernel);
 $application->run();
