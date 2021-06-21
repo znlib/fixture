@@ -84,6 +84,7 @@ class StructHelper
         foreach ($schemaNames as $schemaName) {
             $entity = new SchemaEntity;
             $entity->setName($schemaName);
+            $entity->setDbName($connection->getConfig('database'));
             $collection->add($entity);
         }
         return $collection;
