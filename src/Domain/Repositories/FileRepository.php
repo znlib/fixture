@@ -3,6 +3,7 @@
 namespace ZnLib\Fixture\Domain\Repositories;
 
 use Illuminate\Support\Collection;
+use ZnCore\Base\Helpers\ClassHelper;
 use ZnCore\Base\Helpers\LoadHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Interfaces\GetEntityClassInterface;
@@ -15,6 +16,8 @@ use ZnLib\Fixture\Domain\Entities\FixtureEntity;
 use ZnLib\Fixture\Domain\Libs\DataFixture;
 use ZnLib\Fixture\Domain\Libs\FixtureInterface;
 use ZnLib\Fixture\Domain\Traits\ConfigTrait;
+use ZnSandbox\Sandbox\Generator\Domain\Entities\RelationEntity;
+use ZnSandbox\Sandbox\Generator\Domain\Services\GeneratorService;
 
 class FileRepository implements RepositoryInterface, GetEntityClassInterface
 {
@@ -54,10 +57,25 @@ class FileRepository implements RepositoryInterface, GetEntityClassInterface
         return EntityHelper::createEntityCollection($entityClass, $array);
     }
 
+    private function getRelations(string $name): array {
+        /** @var GeneratorService $generatorService */
+        $generatorService = ClassHelper::createObject(GeneratorService::class);
+        $struct = $generatorService->getStructure([$name]);
+        $deps = [];
+        /** @var RelationEntity $relationEntity */
+        foreach ($struct[0]->getRelations() as $relationEntity) {
+            $deps[] = $relationEntity->getForeignTableName();
+        }
+        return $deps;
+    }
+
     public function saveData($name, Collection $collection)
     {
         $dataFixture = $this->loadData($name);
         $data['deps'] = $dataFixture->deps();
+        $data['deps'] = array_merge($data['deps'], $this->getRelations($name));
+        $data['deps'] = array_unique($data['deps']);
+
         if(property_exists($collection->first(), 'id')) {
             $collection = $collection->sortBy('id');
         }
