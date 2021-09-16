@@ -74,6 +74,7 @@ class FileRepository implements RepositoryInterface, GetEntityClassInterface
         $dataFixture = $this->loadData($name);
         $data['deps'] = $dataFixture->deps();
         $data['deps'] = array_merge($data['deps'], $this->getRelations($name));
+        ArrayHelper::removeValue($data['deps'], $name);
         $data['deps'] = array_unique($data['deps']);
 
         if(property_exists($collection->first(), 'id')) {
