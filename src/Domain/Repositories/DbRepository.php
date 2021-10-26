@@ -163,6 +163,9 @@ class DbRepository extends BaseEloquentRepository
 
     private function resetAutoIncrement($name)
     {
+        $tableAlias = $this->getCapsule()->getAlias();
+        $targetTableName = $tableAlias->encode('default', $name);
+
         /*$tableAlias = $this->getCapsule()->getAlias();
         $targetTableName = $tableAlias->encode('default', $name);
         $connection = $this->getCapsule()->getConnectionByTableName($name);
