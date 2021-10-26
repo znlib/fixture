@@ -81,12 +81,22 @@ class DbRepository extends BaseEloquentRepository
         return $connection->getSchemaBuilder()->hasTable($targetTableName);
     }
 
-    public function saveData($name, Collection $collection)
+    public function getQueryBuilderByTableName($name): \Illuminate\Database\Query\Builder
     {
         $tableAlias = $this->getCapsule()->getAlias();
         $targetTableName = $tableAlias->encode('default', $name);
         $connection = $this->getCapsule()->getConnectionByTableName($name);
         $queryBuilder = $connection->table($targetTableName);
+        return $queryBuilder;
+    }
+
+    public function saveData($name, Collection $collection)
+    {
+        /*$tableAlias = $this->getCapsule()->getAlias();
+        $targetTableName = $tableAlias->encode('default', $name);
+        $connection = $this->getCapsule()->getConnectionByTableName($name);
+        $queryBuilder = $connection->table($targetTableName);*/
+        $queryBuilder = $this->getQueryBuilderByTableName($name);
         //$queryBuilder->truncate();
         $chunks = $collection->chunk(150);
         foreach ($chunks as $chunk) {
@@ -98,10 +108,11 @@ class DbRepository extends BaseEloquentRepository
 
     public function loadData($name): Collection
     {
-        $tableAlias = $this->getCapsule()->getAlias();
+        /*$tableAlias = $this->getCapsule()->getAlias();
         $targetTableName = $tableAlias->encode('default', $name);
         $connection = $this->getCapsule()->getConnectionByTableName($name);
-        $queryBuilder = $connection->table($targetTableName);
+        $queryBuilder = $connection->table($targetTableName);*/
+        $queryBuilder = $this->getQueryBuilderByTableName($name);
         $data = $queryBuilder->get()->toArray();
         return new Collection($data);
     }
@@ -152,10 +163,12 @@ class DbRepository extends BaseEloquentRepository
 
     private function resetAutoIncrement($name)
     {
-        $tableAlias = $this->getCapsule()->getAlias();
+        /*$tableAlias = $this->getCapsule()->getAlias();
         $targetTableName = $tableAlias->encode('default', $name);
         $connection = $this->getCapsule()->getConnectionByTableName($name);
-        $queryBuilder = $connection->table($targetTableName);
+        $queryBuilder = $connection->table($targetTableName);*/
+        $queryBuilder = $this->getQueryBuilderByTableName($name);
+        $connection = $queryBuilder->getConnection();
         $driver = $connection->getConfig('driver');
 
         /* @var Builder|MySqlBuilder|PostgresBuilder $schema */
