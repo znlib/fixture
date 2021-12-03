@@ -3,6 +3,7 @@
 namespace ZnLib\Fixture\Domain\Services;
 
 use Illuminate\Support\Collection;
+use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnLib\Fixture\Domain\Entities\FixtureEntity;
 use ZnLib\Fixture\Domain\Repositories\DbRepository;
@@ -94,6 +95,18 @@ class FixtureService
         }
 
         if($data) {
+            $attributes = [];
+            foreach ($data as $row) {
+                $attributes = ArrayHelper::merge($attributes, array_keys($row));
+            }
+            $attributes = array_unique($attributes);
+
+            foreach ($data as &$row) {
+                foreach ($attributes as $attrName) {
+                    $row[$attrName] = $row[$attrName] ?? null;
+                }
+            }
+//            dd($data);
             $this->dbRepository->saveData($tableName, new Collection($data));
         }
 
