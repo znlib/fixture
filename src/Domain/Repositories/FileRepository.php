@@ -76,6 +76,7 @@ class FileRepository implements RepositoryInterface, GetEntityClassInterface
         $data['deps'] = array_merge($data['deps'], $this->getRelations($name));
         ArrayHelper::removeValue($data['deps'], $name);
         $data['deps'] = array_unique($data['deps']);
+        $data['deps'] = array_values($data['deps']);
 
         if(property_exists($collection->first(), 'id')) {
             $collection = $collection->sortBy('id');
