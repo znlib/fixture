@@ -9,16 +9,38 @@ use Illuminate\Support\Collection;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
 use ZnCore\Domain\Helpers\EntityHelper;
 use ZnCore\Domain\Interfaces\Libs\EntityManagerInterface;
+use ZnCore\Domain\Traits\EntityManagerTrait;
 use ZnLib\Db\Base\BaseEloquentRepository;
 use ZnLib\Db\Capsule\Manager;
 use ZnLib\Db\Enums\DbDriverEnum;
+use ZnLib\Db\Traits\EloquentTrait;
 use ZnLib\Fixture\Domain\Entities\FixtureEntity;
 use ZnLib\Fixture\Domain\Helpers\StructHelper;
 
-class DbRepository extends BaseEloquentRepository
+class DbRepository //extends BaseEloquentRepository
 {
 
-    public function getEntityClass(): string
+    use EloquentTrait;
+    //use EntityManagerTrait;
+
+//    private $capsule;
+
+    public function __construct(EntityManagerInterface $em, Manager $capsule)
+    {
+        $this->capsule = $capsule;
+        //$this->setEntityManager($em);
+        $schema = $this->getSchema();
+        // Выключаем проверку целостности связей
+        $schema->disableForeignKeyConstraints();
+    }
+
+    public function connectionName()
+    {
+        return 'default';
+//        return $this->capsule->getConnectionNameByTableName($this->tableName());
+    }
+
+    /*public function getEntityClass(): string
     {
         return FixtureEntity::class;
     }
@@ -26,9 +48,9 @@ class DbRepository extends BaseEloquentRepository
     public function tableName(): string
     {
         return '';
-    }
+    }*/
 
-    public function __construct(EntityManagerInterface $em, Manager $capsule)
+    /*public function __construct(EntityManagerInterface $em, Manager $capsule)
     {
         parent::__construct($em, $capsule);
 
@@ -36,7 +58,7 @@ class DbRepository extends BaseEloquentRepository
 
         // Выключаем проверку целостности связей
         $schema->disableForeignKeyConstraints();
-    }
+    }*/
 
     public function dropAllTables()
     {
