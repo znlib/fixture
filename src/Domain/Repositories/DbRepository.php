@@ -161,7 +161,7 @@ class DbRepository extends BaseEloquentRepository
         return $collection;
     }
 
-    private function resetAutoIncrement($name)
+    public function resetAutoIncrement($name)
     {
         $tableAlias = $this->getCapsule()->getAlias();
         $targetTableName = $tableAlias->encode('default', $name);
