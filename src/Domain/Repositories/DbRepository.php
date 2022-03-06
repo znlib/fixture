@@ -14,12 +14,14 @@ use ZnLib\Db\Base\BaseEloquentRepository;
 use ZnLib\Db\Capsule\Manager;
 use ZnLib\Db\Enums\DbDriverEnum;
 use ZnLib\Db\Traits\EloquentTrait;
+use ZnLib\Db\Traits\TableNameTrait;
 use ZnLib\Fixture\Domain\Entities\FixtureEntity;
 use ZnLib\Fixture\Domain\Helpers\StructHelper;
 
 class DbRepository //extends BaseEloquentRepository
 {
 
+    use TableNameTrait;
     use EloquentTrait;
     //use EntityManagerTrait;
 
@@ -27,7 +29,7 @@ class DbRepository //extends BaseEloquentRepository
 
     public function __construct(EntityManagerInterface $em, Manager $capsule)
     {
-        $this->capsule = $capsule;
+        $this->setCapsule($capsule);
         //$this->setEntityManager($em);
         $schema = $this->getSchema();
         // Выключаем проверку целостности связей
@@ -62,60 +64,68 @@ class DbRepository //extends BaseEloquentRepository
 
     public function dropAllTables()
     {
-        $schema = $this->getSchema();
-        $schema->dropAllTables();
+        $this
+            ->getSchema()
+            ->dropAllTables();
     }
 
     public function dropAllViews()
     {
-        $schema = $this->getSchema();
-        $schema->dropAllViews();
+        $this
+            ->getSchema()
+            ->dropAllViews();
     }
 
     public function dropAllTypes()
     {
-        $schema = $this->getSchema();
-        $schema->dropAllTypes();
+        $this
+            ->getSchema()
+            ->dropAllTypes();
     }
 
     public function deleteTable($name)
     {
-        $tableAlias = $this->getCapsule()->getAlias();
-        $targetTableName = $tableAlias->encode('default', $name);
-        $schema = $this->getSchema();
-        $schema->drop($targetTableName);
+//        $tableAlias = $this->getCapsule()->getAlias();
+        $targetTableName = $this->encodeTableName($name);
+        $this
+            ->getSchema()
+            ->drop($targetTableName);
     }
 
     public function truncateData($name)
     {
-        $tableAlias = $this->getCapsule()->getAlias();
-        $targetTableName = $tableAlias->encode('default', $name);
-        $connection = $this->getCapsule()->getConnectionByTableName($name);
-        $queryBuilder = $connection->table($targetTableName);
+//        $tableAlias = $this->getCapsule()->getAlias();
+//        $targetTableName = $this->encodeTableName($name);
+//        $connection = $this->getCapsule()->getConnectionByTableName($name);
+//        $queryBuilder = $connection->table($targetTableName);
+
+        $queryBuilder = $this->getQueryBuilderByTableName($name);
         $queryBuilder->truncate();
     }
 
     public function isHasTable($name)
     {
-        $tableAlias = $this->getCapsule()->getAlias();
-        $targetTableName = $tableAlias->encode('default', $name);
+//        $tableAlias = $this->getCapsule()->getAlias();
+//        $targetTableName = $this->encodeTableName($name);
+
+        $targetTableName = $this->encodeTableName($name);
         $connection = $this->getCapsule()->getConnectionByTableName($name);
         return $connection->getSchemaBuilder()->hasTable($targetTableName);
     }
 
-    public function getQueryBuilderByTableName($name): \Illuminate\Database\Query\Builder
+    /*public function getQueryBuilderByTableName($name): \Illuminate\Database\Query\Builder
     {
         $tableAlias = $this->getCapsule()->getAlias();
-        $targetTableName = $tableAlias->encode('default', $name);
+        $targetTableName = $this->encodeTableName($name);
         $connection = $this->getCapsule()->getConnectionByTableName($name);
         $queryBuilder = $connection->table($targetTableName);
         return $queryBuilder;
-    }
+    }*/
 
     public function saveData($name, Collection $collection)
     {
         /*$tableAlias = $this->getCapsule()->getAlias();
-        $targetTableName = $tableAlias->encode('default', $name);
+        $targetTableName = $this->encodeTableName($name);
         $connection = $this->getCapsule()->getConnectionByTableName($name);
         $queryBuilder = $connection->table($targetTableName);*/
         $queryBuilder = $this->getQueryBuilderByTableName($name);
@@ -131,7 +141,7 @@ class DbRepository //extends BaseEloquentRepository
     public function loadData($name): Collection
     {
         /*$tableAlias = $this->getCapsule()->getAlias();
-        $targetTableName = $tableAlias->encode('default', $name);
+        $targetTableName = $this->encodeTableName($name);
         $connection = $this->getCapsule()->getConnectionByTableName($name);
         $queryBuilder = $connection->table($targetTableName);*/
         $queryBuilder = $this->getQueryBuilderByTableName($name);
@@ -185,11 +195,11 @@ class DbRepository //extends BaseEloquentRepository
 
     public function resetAutoIncrement($name)
     {
-        $tableAlias = $this->getCapsule()->getAlias();
-        $targetTableName = $tableAlias->encode('default', $name);
+//        $tableAlias = $this->getCapsule()->getAlias();
+        $targetTableName = $this->encodeTableName($name);
 
         /*$tableAlias = $this->getCapsule()->getAlias();
-        $targetTableName = $tableAlias->encode('default', $name);
+        $targetTableName = $this->encodeTableName($name);
         $connection = $this->getCapsule()->getConnectionByTableName($name);
         $queryBuilder = $connection->table($targetTableName);*/
         $queryBuilder = $this->getQueryBuilderByTableName($name);
