@@ -10,7 +10,7 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "doctrine/dbal": "^2.10"
+    "zndatabase/fixture": "dev-main"
   },
   "autoload": {
     "psr-4": {
