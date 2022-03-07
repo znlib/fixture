@@ -12,7 +12,7 @@ use ZnCore\Domain\Interfaces\Libs\EntityManagerInterface;
 use ZnCore\Domain\Traits\EntityManagerTrait;
 use ZnLib\Db\Base\BaseEloquentRepository;
 use ZnLib\Db\Capsule\Manager;
-use ZnLib\Db\Enums\DbDriverEnum;
+use ZnDatabase\Base\Domain\Enums\DbDriverEnum;
 use ZnDatabase\Eloquent\Domain\Traits\EloquentTrait;
 use ZnDatabase\Base\Domain\Traits\TableNameTrait;
 use ZnLib\Fixture\Domain\Entities\FixtureEntity;
