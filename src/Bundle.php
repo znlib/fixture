@@ -7,10 +7,17 @@ use ZnCore\Base\Libs\App\Base\BaseBundle;
 class Bundle extends BaseBundle
 {
 
-    public function console(): array
+    public function deps(): array
     {
         return [
-            'ZnLib\Fixture\Commands',
+            new \ZnDatabase\Fixture\Bundle(['all']),
+        ];
+    }
+
+    /*public function console(): array
+    {
+        return [
+            'ZnDatabase\Fixture\Commands',
         ];
     }
 
@@ -19,5 +26,5 @@ class Bundle extends BaseBundle
         return [
             __DIR__ . '/Domain/config/container.php',
         ];
-    }
+    }*/
 }
