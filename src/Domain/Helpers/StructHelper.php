@@ -6,8 +6,8 @@ use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\Collection;
 use ZnCore\Base\Legacy\Yii\Helpers\ArrayHelper;
-use ZnLib\Db\Entities\SchemaEntity;
-use ZnLib\Db\Entities\TableEntity;
+use ZnDatabase\Base\Domain\Entities\SchemaEntity;
+use ZnDatabase\Base\Domain\Entities\TableEntity;
 
 class StructHelper
 {

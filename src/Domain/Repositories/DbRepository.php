@@ -13,8 +13,8 @@ use ZnCore\Domain\Traits\EntityManagerTrait;
 use ZnLib\Db\Base\BaseEloquentRepository;
 use ZnLib\Db\Capsule\Manager;
 use ZnLib\Db\Enums\DbDriverEnum;
-use ZnLib\Db\Traits\EloquentTrait;
-use ZnLib\Db\Traits\TableNameTrait;
+use ZnDatabase\Eloquent\Domain\Traits\EloquentTrait;
+use ZnDatabase\Base\Domain\Traits\TableNameTrait;
 use ZnLib\Fixture\Domain\Entities\FixtureEntity;
 use ZnLib\Fixture\Domain\Helpers\StructHelper;
 

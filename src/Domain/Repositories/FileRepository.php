@@ -16,7 +16,7 @@ use ZnLib\Fixture\Domain\Entities\FixtureEntity;
 use ZnLib\Fixture\Domain\Libs\DataFixture;
 use ZnLib\Fixture\Domain\Libs\FixtureInterface;
 use ZnLib\Fixture\Domain\Traits\ConfigTrait;
-use ZnLib\Db\Entities\RelationEntity;
+use ZnDatabase\Base\Domain\Entities\RelationEntity;
 use ZnSandbox\Sandbox\Generator\Domain\Services\GeneratorService;
 
 class FileRepository implements RepositoryInterface, GetEntityClassInterface
