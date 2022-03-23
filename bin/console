@@ -12,7 +12,8 @@ DotEnv::init();
 
 $bundles = [
     new \ZnCore\Base\Libs\App\Bundle(['all']),
-    new \ZnLib\Fixture\Bundle(['container', 'console']),
+//    new \ZnLib\Fixture\Bundle(['container', 'console']),
+    new \ZnDatabase\Fixture\Bundle(['container', 'console']),
 ];
 $bundles = ArrayHelper::merge($bundles, include __DIR__ . '/../../../../' . DotEnv::get('BUNDLES_CONFIG_FILE'));
 $kernel = KernelFactory::createConsoleKernel($bundles);
