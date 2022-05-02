@@ -10,7 +10,7 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "zndatabase/fixture": "dev-main"
+    "zndatabase/fixture": "0.x-dev"
   },
   "autoload": {
     "psr-4": {
